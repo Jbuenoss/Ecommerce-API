@@ -1,8 +1,8 @@
 ﻿using EcommerceAPI.Data.Enums;
 
-namespace EcommerceAPI.Models
+namespace EcommerceAPI.Dto
 {
-    public class Product
+    public class ProductDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -10,7 +10,5 @@ namespace EcommerceAPI.Models
         public double Price { get; set; }
         public int Stock { get; set; }
         public ProductCategory Category { get; set; }
-        public User Owner { get; set; }
-            
     }
 }
