@@ -22,5 +22,17 @@ namespace EcommerceAPI.Repository
         {
             return _context.Users.OrderBy(u => u.Id).ToList();
         }
+
+        public bool CreateUser(User user)
+        {
+            _context.Users.Add(user);
+
+            return SaveUser();
+        }
+
+        public bool SaveUser()
+        {
+            return _context.SaveChanges() > 0;
+        }
     }
 }

@@ -9,5 +9,8 @@ namespace EcommerceAPI.Interfaces
         Product GetProduct(int id);
         Product GetProduct(string Name);
         ICollection<Product> GetProduct(ProductCategory category);
+        bool CheckUser(int UserId);
+        bool CreateProduct(Product product, int userId);
+        bool SaveProduct();
     }
 }

@@ -39,5 +39,23 @@ namespace EcommerceAPI.Controllers
                 return BadRequest(ModelState);
             return Ok(pokemon);
         }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateProduct([FromBody] Product product, [FromQuery] int UserId)
+        {
+
+            if (!_productRepository.CheckUser(UserId))
+                return BadRequest(ModelState);
+
+            if (!_productRepository.CreateProduct(product, UserId))
+            {
+                ModelState.AddModelError("erro", "Somethings wrong in creation");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created!");
+        }
     }
 }

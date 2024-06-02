@@ -14,6 +14,8 @@ namespace EcommerceAPI.Repository
             _context = context;
         }
 
+        
+
         public Product GetProduct(int id)
         {
             return _context.Products.Where(p => p.Id == id).FirstOrDefault();
@@ -33,5 +35,33 @@ namespace EcommerceAPI.Repository
         {
             return _context.Products.OrderBy(p => p.Id).ToList();
         }
+
+        public bool CheckUser(int UserId)
+        {
+            return _context.Users.Where(a => a.Id == UserId).FirstOrDefault() != null;
+        }
+        public bool CreateProduct(Product product, int userId)
+        {
+            var currentUser = _context.Users.Where(a => a.Id == userId).FirstOrDefault();
+
+            if (currentUser.Products == null)
+            {
+                currentUser.Products = new List<Product>();
+            }
+
+            currentUser.Products.Add(product);
+
+            product.Owner = currentUser;
+
+            _context.Products.Add(product);
+
+            return SaveProduct();
+        }
+
+        public bool SaveProduct()
+        {
+            return _context.SaveChanges() > 0;
+        }
+
     }
 }

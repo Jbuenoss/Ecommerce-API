@@ -41,5 +41,19 @@ namespace EcommerceAPI.Controllers
                 return BadRequest(ModelState);
             return Ok(product);
         }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult CreateUser(User user)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_userRepository.CreateUser(user))
+                return StatusCode(500, ModelState);
+
+            return Ok("Successfully created!");
+        }
     }
 }
