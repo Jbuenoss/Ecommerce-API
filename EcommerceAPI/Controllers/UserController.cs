@@ -2,6 +2,7 @@
 using EcommerceAPI.Dto;
 using EcommerceAPI.Interfaces;
 using EcommerceAPI.Models;
+using EcommerceAPI.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -54,6 +55,19 @@ namespace EcommerceAPI.Controllers
                 return StatusCode(500, ModelState);
 
             return Ok("Successfully created!");
+        }
+
+        [HttpPut]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult UpdateUser(User user)
+        {
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (!_userRepository.UpdateUser(user))
+                return StatusCode(500, ModelState);
+
+            return NoContent();
         }
     }
 }

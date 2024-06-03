@@ -20,13 +20,18 @@ namespace EcommerceAPI.Repository
 
         public ICollection<User> GetUsers()
         {
-            return _context.Users.OrderBy(u => u.Id).ToList();
+            return _context.Users.OrderBy(u => u.Id).Include(a => a.Products).ToList();
         }
 
         public bool CreateUser(User user)
         {
             _context.Users.Add(user);
 
+            return SaveUser();
+        }
+        public bool UpdateUser(User user)
+        {
+            _context.Users.Update(user);
             return SaveUser();
         }
 

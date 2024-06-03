@@ -8,6 +8,7 @@ namespace EcommerceAPI.Interfaces
         ICollection<User> GetUsers();
         User GetById(int id);
         bool CreateUser(User user);
+        bool UpdateUser(User user);
         bool SaveUser();
     }
 }
