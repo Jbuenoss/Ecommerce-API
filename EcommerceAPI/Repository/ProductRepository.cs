@@ -38,6 +38,11 @@ namespace EcommerceAPI.Repository
         {
             return _context.Users.Where(a => a.Id == UserId).FirstOrDefault() != null;
         }
+
+        public bool CheckProduct(int id)
+        {
+            return _context.Products.Any(p => p.Id == id);
+        }
         public bool CreateProduct(Product product, int userId)
         {
             var currentUser = _context.Users.Where(a => a.Id == userId).FirstOrDefault();
@@ -63,9 +68,16 @@ namespace EcommerceAPI.Repository
             _context.Update(product);
             return SaveProduct();
         }
+        public bool DeleteProduct(int id)
+        {
+            Product product = _context.Products.Where(p => p.Id == id).FirstOrDefault();
+
+            _context.Remove(product);
+            return SaveProduct();
+        }
         public bool SaveProduct()
         {
             return _context.SaveChanges() > 0;
-        }  
+        }
     }
 }

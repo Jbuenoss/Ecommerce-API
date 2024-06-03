@@ -51,7 +51,7 @@ namespace EcommerceAPI.Controllers
 
             if (!_productRepository.CreateProduct(product, UserId))
             {
-                ModelState.AddModelError("erro", "Somethings wrong in creation");
+                ModelState.AddModelError("erro", "Something's wrong in creation");
                 return StatusCode(500, ModelState);
             }
 
@@ -73,5 +73,22 @@ namespace EcommerceAPI.Controllers
             return NoContent();
         }
 
+        [HttpDelete]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteProduct([FromBody] int id)
+        {
+            if (!ModelState.IsValid) 
+                return BadRequest(ModelState);
+            if (!_productRepository.CheckProduct(id))
+                return NotFound();
+            if (!_productRepository.DeleteProduct(id))
+            {
+                ModelState.AddModelError("erro", "Something's wrong in server");
+                return StatusCode(500, ModelState);
+            }
+            return NoContent();
+        }
     }
 }
