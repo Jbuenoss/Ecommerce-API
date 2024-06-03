@@ -11,6 +11,7 @@ namespace EcommerceAPI.Interfaces
         ICollection<Product> GetProduct(ProductCategory category);
         bool CheckUser(int UserId);
         bool CreateProduct(Product product, int userId);
+        bool UpdateProduct(Product product);
         bool SaveProduct();
     }
 }

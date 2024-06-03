@@ -9,6 +9,7 @@ namespace EcommerceAPI.Helper
         public MappingProfile()
         {
             CreateMap<User, UserDto>();
+            CreateMap<UserDto, User>();
             CreateMap<Product, ProductDto>();
         }
     }

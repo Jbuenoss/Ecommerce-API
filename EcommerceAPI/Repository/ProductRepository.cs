@@ -14,8 +14,6 @@ namespace EcommerceAPI.Repository
             _context = context;
         }
 
-        
-
         public Product GetProduct(int id)
         {
             return _context.Products.Where(p => p.Id == id).FirstOrDefault();
@@ -53,15 +51,21 @@ namespace EcommerceAPI.Repository
 
             product.Owner = currentUser;
 
-            _context.Products.Add(product);
+            _context.Add(product);
+            _context.Update(currentUser);
 
             return SaveProduct();
         }
 
+        public bool UpdateProduct(Product product)
+        {
+            product.Owner = null;
+            _context.Update(product);
+            return SaveProduct();
+        }
         public bool SaveProduct()
         {
             return _context.SaveChanges() > 0;
-        }
-
+        }  
     }
 }

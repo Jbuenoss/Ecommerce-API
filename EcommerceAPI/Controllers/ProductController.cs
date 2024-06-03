@@ -57,5 +57,21 @@ namespace EcommerceAPI.Controllers
 
             return Ok("Successfully created!");
         }
+
+        [HttpPut]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateProduct(Product product)
+        {
+            //var productMap = _mapper.Map<Product>(product);
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (!_productRepository.UpdateProduct(product))
+                return StatusCode(500, ModelState);
+
+            return NoContent();
+        }
+
     }
 }

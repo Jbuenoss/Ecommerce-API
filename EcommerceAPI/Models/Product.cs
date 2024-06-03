@@ -10,7 +10,7 @@ namespace EcommerceAPI.Models
         public double Price { get; set; }
         public int Stock { get; set; }
         public ProductCategory Category { get; set; }
-        public User Owner { get; set; }
+        public User? Owner { get; set; }
             
     }
 }
