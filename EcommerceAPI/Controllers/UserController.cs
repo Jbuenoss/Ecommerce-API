@@ -69,5 +69,24 @@ namespace EcommerceAPI.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteUser([FromBody] int id)
+        {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+            if (_userRepository.GetById(id) == null)
+                return NotFound();
+            if (!_userRepository.DeleteUser(id))
+            {
+                ModelState.AddModelError("erro", "Servor Error");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }

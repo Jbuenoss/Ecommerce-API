@@ -9,6 +9,7 @@ namespace EcommerceAPI.Interfaces
         User GetById(int id);
         bool CreateUser(User user);
         bool UpdateUser(User user);
+        bool DeleteUser(int id);
         bool SaveUser();
     }
 }

@@ -35,9 +35,17 @@ namespace EcommerceAPI.Repository
             return SaveUser();
         }
 
+        public bool DeleteUser(int id)
+        {
+            var user = _context.Users.Where(a => a.Id == id).FirstOrDefault();
+            _context.Users.Remove(user);
+
+            return SaveUser();
+        }
         public bool SaveUser()
         {
             return _context.SaveChanges() > 0;
         }
+
     }
 }
