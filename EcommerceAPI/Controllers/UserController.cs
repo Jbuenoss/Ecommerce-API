@@ -33,15 +33,31 @@ namespace EcommerceAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(200, Type=typeof(User))]
+        [ProducesResponseType(200, Type = typeof(User))]
         public IActionResult GetUser(int id)
         {
-            var product = _mapper.Map<UserDto>(_userRepository.GetById(id));
+            var users = _mapper.Map<UserDto>(_userRepository.GetById(id));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            return Ok(product);
+            return Ok(users);
         }
+
+        [HttpGet("product/{userId}")]
+        [ProducesResponseType(200, Type= typeof(ICollection<Product>))]
+        [ProducesResponseType(404)]
+        public IActionResult GetProductByUser(int userId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            if (_userRepository.GetById(userId) == null)
+                return NotFound();
+
+            var products = _mapper.Map<ICollection<ProductDto>>(_userRepository.GetProductByUser(userId));
+
+            return Ok(products);
+        }
+
 
         [HttpPost]
         [ProducesResponseType(204)]
@@ -60,11 +76,13 @@ namespace EcommerceAPI.Controllers
         [HttpPut]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult UpdateUser(User user)
+        public IActionResult UpdateUser(UserDto user)
         {
-
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            if (!_userRepository.UpdateUser(user))
+
+            var userdto = _mapper.Map<User>(user);
+
+            if (!_userRepository.UpdateUser(userdto))
                 return StatusCode(500, ModelState);
 
             return NoContent();

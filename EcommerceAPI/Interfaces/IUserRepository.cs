@@ -7,6 +7,7 @@ namespace EcommerceAPI.Interfaces
     {
         ICollection<User> GetUsers();
         User GetById(int id);
+        ICollection<Product> GetProductByUser(int userId);
         bool CreateUser(User user);
         bool UpdateUser(User user);
         bool DeleteUser(int id);
