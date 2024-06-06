@@ -62,12 +62,13 @@ namespace EcommerceAPI.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)] 
-        public IActionResult UpdateProduct(Product product)
+        public IActionResult UpdateProduct(ProductDto product)
         {
-            //var productMap = _mapper.Map<Product>(product);
+            var productMap = _mapper.Map<Product>(product);
 
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-            if (!_productRepository.UpdateProduct(product))
+            if (!ModelState.IsValid) 
+                return BadRequest(ModelState);
+            if (!_productRepository.UpdateProduct(productMap))
                 return StatusCode(500, ModelState);
 
             return NoContent();
