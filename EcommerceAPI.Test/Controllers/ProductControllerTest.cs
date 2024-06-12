@@ -25,7 +25,7 @@ namespace EcommerceAPI.Test.Controllers
             //Arrange
             var products = A.Fake<ICollection<Product>>();
             var productsDto = A.Fake<List<ProductDto>>();
-            //configure the behavior of the mock of type IMapper
+                //configure the behavior of the mock of type IMapper
             A.CallTo(() => _mapper.Map<List<ProductDto>>(products)).Returns(productsDto);
             var controller = new ProductController(_productRepository, _mapper);
 
@@ -37,6 +37,19 @@ namespace EcommerceAPI.Test.Controllers
             result.Should().BeOfType(typeof(OkObjectResult));
         }
 
+        [Fact]
+        public void ProductController_CreateProduct_ReturnOk()
+        {
+            Product product = A.Fake<Product>();
+            int userId = 1;
+            var controller = new ProductController(_productRepository, _mapper);
+            A.CallTo(() => _productRepository.CreateProduct(product, userId)).Returns(true);
+            A.CallTo(() => _productRepository.CheckUser(userId)).Returns(true);
 
+            var result = controller.CreateProduct(product, userId);
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType(typeof(OkObjectResult));
+        }
     }
 }
