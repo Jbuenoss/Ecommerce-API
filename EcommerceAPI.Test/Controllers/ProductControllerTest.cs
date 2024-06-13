@@ -13,10 +13,12 @@ namespace EcommerceAPI.Test.Controllers
     {
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
+        private readonly ProductController _controller;
         public ProductControllerTest()
         {
             _productRepository = A.Fake<IProductRepository>();
             _mapper = A.Fake<IMapper>();
+            _controller = new ProductController(_productRepository, _mapper);
         }
 
         [Fact]
@@ -27,12 +29,27 @@ namespace EcommerceAPI.Test.Controllers
             var productsDto = A.Fake<List<ProductDto>>();
                 //configure the behavior of the mock of type IMapper
             A.CallTo(() => _mapper.Map<List<ProductDto>>(products)).Returns(productsDto);
-            var controller = new ProductController(_productRepository, _mapper);
 
             //Act
-            var result = controller.GetProducts();
+            var result = _controller.GetProducts();
 
             //Assert
+            result.Should().NotBeNull();
+            result.Should().BeOfType(typeof(OkObjectResult));
+        }
+
+        [Fact]
+        public void ProductController_GetProduct_ReturnOk()
+        {
+            int idProduct = 1;
+            var product = A.Fake<Product>();
+            var productDto = A.Fake<ProductDto>();
+            A.CallTo(() => _productRepository.GetProduct(idProduct)).Returns(product);
+            A.CallTo(() => _mapper.Map<ProductDto>(product)).Returns(productDto);
+
+            var result = _controller.GetProduct(idProduct);
+
+
             result.Should().NotBeNull();
             result.Should().BeOfType(typeof(OkObjectResult));
         }
@@ -42,14 +59,16 @@ namespace EcommerceAPI.Test.Controllers
         {
             Product product = A.Fake<Product>();
             int userId = 1;
-            var controller = new ProductController(_productRepository, _mapper);
             A.CallTo(() => _productRepository.CreateProduct(product, userId)).Returns(true);
             A.CallTo(() => _productRepository.CheckUser(userId)).Returns(true);
 
-            var result = controller.CreateProduct(product, userId);
+            var result = _controller.CreateProduct(product, userId);
 
             result.Should().NotBeNull();
             result.Should().BeOfType(typeof(OkObjectResult));
         }
+
+        
+
     }
 }
