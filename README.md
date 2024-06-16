@@ -13,6 +13,7 @@ Ecommerce-API is a  web API designed for managing an e-commerce platform. This A
 * **.NET:** The framework used to develop the API, offering a powerful and flexible platform
 * **ASP.NET Core:** For building the web API, providing high performance and cross-platform capabilities.
 * **Entity Framework:** For Object-Relational Mapping (ORM), facilitating database interactions.
+* **xUnit:** Used for testing the repositories and controllers, ensuring code quality and reliability.
 
 ## API Endpoints
 
