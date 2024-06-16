@@ -6,8 +6,21 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
+
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:5173")
+                                .AllowAnyMethod()
+                                .AllowAnyHeader()
+                                .AllowCredentials(); // allow the credential from axios
+                      });
+});
 
 //add the seeding
 builder.Services.AddTransient<Seed>();
@@ -52,6 +65,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
 
