@@ -23,6 +23,13 @@ namespace EcommerceAPI.Repository
             return _context.Users.OrderBy(u => u.Id).ToList();
         }
 
+        public bool ExistUserByEmail(string email)
+        {
+            if (_context.Users.Where(a => a.Email == email).FirstOrDefault() == null)
+                return false;
+            return true;
+        }
+
         public ICollection<Product> GetProductByUser(int userId)
         {
             return _context.Users.Where(u => u.Id == userId).SelectMany(p => p.Products).ToList();

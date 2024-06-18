@@ -3,6 +3,7 @@ using EcommerceAPI.Dto;
 using EcommerceAPI.Interfaces;
 using EcommerceAPI.Models;
 using EcommerceAPI.Repository;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -44,7 +45,7 @@ namespace EcommerceAPI.Controllers
         }
 
         [HttpGet("product/{userId}")]
-        [ProducesResponseType(200, Type= typeof(ICollection<Product>))]
+        [ProducesResponseType(200, Type = typeof(ICollection<Product>))]
         [ProducesResponseType(404)]
         public IActionResult GetProductByUser(int userId)
         {
@@ -61,15 +62,20 @@ namespace EcommerceAPI.Controllers
 
         [HttpPost]
         [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(409)]
+        [ProducesResponseType(500)]
         public IActionResult CreateUser(User user)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            if (_userRepository.ExistUserByEmail(user.Email))
+            {
+                ModelState.AddModelError("Error", "Email already in use");
+                return Conflict(ModelState);
+            }
 
             if (!_userRepository.CreateUser(user))
                 return StatusCode(500, ModelState);
-
             return Ok("Successfully created!");
         }
 
@@ -88,17 +94,17 @@ namespace EcommerceAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
+        [HttpDelete("{userId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteUser([FromBody] int id)
+        public IActionResult DeleteUser(int userId)
         {
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
-            if (_userRepository.GetById(id) == null)
+            if (_userRepository.GetById(userId) == null)
                 return NotFound();
-            if (!_userRepository.DeleteUser(id))
+            if (!_userRepository.DeleteUser(userId))
             {
                 ModelState.AddModelError("erro", "Servor Error");
                 return StatusCode(500, ModelState);

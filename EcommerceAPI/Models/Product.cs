@@ -11,6 +11,8 @@ namespace EcommerceAPI.Models
         public int Stock { get; set; }
         public ProductCategory Category { get; set; }
         public User? Owner { get; set; }
-            
+        //to promotion products
+        public bool IsOnPromotion { get; set; }
+        public double PromotionPrice { get; set; }
     }
 }

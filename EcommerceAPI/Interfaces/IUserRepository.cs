@@ -6,6 +6,7 @@ namespace EcommerceAPI.Interfaces
     public interface IUserRepository
     {
         ICollection<User> GetUsers();
+        bool ExistUserByEmail(string email);
         User GetById(int id);
         ICollection<Product> GetProductByUser(int userId);
         bool CreateUser(User user);

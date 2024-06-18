@@ -10,5 +10,8 @@ namespace EcommerceAPI.Dto
         public double Price { get; set; }
         public int Stock { get; set; }
         public ProductCategory Category { get; set; }
+        //to promotion products
+        public bool IsOnPromotion { get; set; }
+        public double PromotionPrice { get; set; }
     }
 }
