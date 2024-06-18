@@ -4,6 +4,7 @@ using EcommerceAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcommerceAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240618203021_updateProducts")]
+    partial class updateProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,7 +40,7 @@ namespace EcommerceAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("IsOnPromotion")
+                    b.Property<bool>("IsOnPromotion")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -50,7 +53,7 @@ namespace EcommerceAPI.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<double?>("PromotionPrice")
+                    b.Property<double>("PromotionPrice")
                         .HasColumnType("float");
 
                     b.Property<int>("Stock")
