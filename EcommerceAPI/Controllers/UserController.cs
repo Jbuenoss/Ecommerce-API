@@ -22,26 +22,15 @@ namespace EcommerceAPI.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        [ProducesResponseType(200, Type = typeof(ICollection<User>))]
-        public IActionResult GetUsers()
-        {
-            var products = _mapper.Map<ICollection<UserDto>>(_userRepository.GetUsers());
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            return Ok(products);
-        }
-
         [HttpGet("{id}")]
         [ProducesResponseType(200, Type = typeof(User))]
         public IActionResult GetUser(int id)
         {
-            var users = _mapper.Map<UserDto>(_userRepository.GetById(id));
+            var user = _mapper.Map<UserDtoNoPassword>(_userRepository.GetById(id));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            return Ok(users);
+            return Ok(user);
         }
 
         [HttpGet("product/{userId}")]
