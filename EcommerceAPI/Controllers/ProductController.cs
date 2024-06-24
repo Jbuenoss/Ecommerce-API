@@ -34,10 +34,13 @@ namespace EcommerceAPI.Controllers
         [ProducesResponseType(200, Type= typeof(Product))]
         public IActionResult GetProduct(int id)
         {
-            var pokemon = _mapper.Map<ProductDto>(_productRepository.GetProduct(id));
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            return Ok(pokemon);
+            var product = _productRepository.GetProduct(id);
+            if(product == null)
+                return NotFound();
+            var productDto = _mapper.Map<ProductDto>(product);
+            return Ok(productDto);
         }
 
         [HttpPost]
