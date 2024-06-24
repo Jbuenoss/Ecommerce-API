@@ -1,7 +1,12 @@
+using EcommerceAPI;
 using EcommerceAPI.Data;
 using EcommerceAPI.Interfaces;
 using EcommerceAPI.Repository;
+using EcommerceAPI.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,9 +28,11 @@ builder.Services.AddCors(options =>
 });
 
 //add the seeding
-builder.Services.AddTransient<Seed>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddTransient<Seed>(); //AddTransient : will create a new forever
+//AddScoped : last for transaction
+builder.Services.AddScoped<IProductRepository, ProductRepository>(); 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+// builder.Services.AddSingleton(); will create one per aplication
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -37,6 +44,24 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+builder.Services.AddTransient<TokenService>();
+
+
+var key = Encoding.ASCII.GetBytes(Configuration.JwtKey);
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+    };
 });
 
 
@@ -70,7 +95,8 @@ app.UseRouting();
 
 app.UseCors(MyAllowSpecificOrigins);
 
-app.UseAuthorization();
+app.UseAuthentication(); //who is
+app.UseAuthorization(); //what can do
 
 app.MapControllers();
 

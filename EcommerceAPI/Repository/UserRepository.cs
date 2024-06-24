@@ -17,6 +17,10 @@ namespace EcommerceAPI.Repository
         {
             return _context.Users.Where(u => u.Id == id).FirstOrDefault();
         }
+        public User GetByEmail(string email)
+        {
+            return _context.Users.FirstOrDefault(u => u.Email == email);
+        }
 
         public ICollection<User> GetUsers()
         {
