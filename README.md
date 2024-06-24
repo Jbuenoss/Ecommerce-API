@@ -18,12 +18,14 @@ Ecommerce-API is a  web API designed for managing an e-commerce platform. This A
 ## API Endpoints
 
 ### Users
-* GET /api/user
-* GET /api/user/{id}
+* GET /api/user/{id} <sub>note: without the password</sub>
 * GET /api/user/product/{userId}
 * POST /api/user
 * PUT /api/user
 * DELETE /api/user
+
+### Account
+* Post /api/Account/v1/login
   
 ### Products
 * GET /api/product
