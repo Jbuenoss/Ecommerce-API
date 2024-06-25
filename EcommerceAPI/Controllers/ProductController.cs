@@ -46,11 +46,13 @@ namespace EcommerceAPI.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateProduct([FromBody] Product product, [FromQuery] int UserId)
+        public IActionResult CreateProduct([FromBody] ProductDto productdto, [FromQuery] int UserId)
         {
 
             if (!_productRepository.CheckUser(UserId))
                 return BadRequest(ModelState);
+
+            var product = _mapper.Map<Product>(productdto);
 
             if (!_productRepository.CreateProduct(product, UserId))
             {
